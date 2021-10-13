@@ -1,9 +1,8 @@
-#include <iostream>
+#include <stdio.h>
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
 #include <sys/time.h>
-using namespace std;
 
 const int processNum = 5;
 //const int processNum = 1;
@@ -30,7 +29,7 @@ void sub_timespec(struct timespec t1, struct timespec t2, struct timespec *td)
 
 //aggregation
 int main() {
-    int pid = 0,numberNum = 0;
+    int pid = 0,numberNum = 0, i;
     
     FILE* fp = fopen(inputFile, "r+");
     while(1){
@@ -77,7 +76,7 @@ int main() {
     fclose(splitedFile);
     fclose(fp);
     
-    for(int i = 0; i < processNum; i++){
+    for(i = 0; i < processNum; i++){
         pid = fork();
         splitNum++;
         if(pid != 0) break;
@@ -85,7 +84,7 @@ int main() {
     
     if(pid == 0){
         printf("hi I'm master\n");
-        for(int i = 0; i < processNum; i++){
+        for(i = 0; i < processNum; i++){
             int status;
             wait(&status);
         }
