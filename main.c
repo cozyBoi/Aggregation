@@ -43,7 +43,7 @@ int main() {
     fp = fopen(inputFile, "r+");
     int numberPerFile = numberNum / processNum, tmpNum = 0, splitNum = 0;
     int initFlag = 1;
-    
+    /*
     FILE* splitedFile;
     while (1) {
         if(initFlag){
@@ -74,7 +74,7 @@ int main() {
         }
     }
     fclose(splitedFile);
-    fclose(fp);
+    fclose(fp);*/
     /*
     for(i = 0; i < processNum; i++){
         pid = fork();
