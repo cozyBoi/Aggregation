@@ -83,11 +83,15 @@ int main() {
     }
     
     if(pid == 0){
+        struct timespec start, finish, delta;
+        clock_gettime(CLOCK_REALTIME, &start);
         printf("hi I'm master\n");
         for(i = 0; i < processNum; i++){
             int status;
             wait(&status);
         }
+        printf("master [PID: %d] process finished\n", getpid());
+        fprintf(stdout, "latency : %ld.%.9ld\n", delta.tv_sec, delta.tv_nsec);
     }
     else{
         struct timespec start, finish, delta;
@@ -117,7 +121,7 @@ int main() {
         
         clock_gettime(CLOCK_REALTIME, &finish);
         sub_timespec(start, finish, &delta);
-        printf("master [PID: %d] process finished\n", getpid());
+        printf("child [PID: %d] process finished\n", getpid());
         fprintf(stdout, "latency : %ld.%.9ld\n", delta.tv_sec, delta.tv_nsec);
     }
     
