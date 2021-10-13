@@ -75,7 +75,7 @@ int main() {
     }
     fclose(splitedFile);
     fclose(fp);
-    
+    /*
     for(i = 0; i < processNum; i++){
         pid = fork();
         splitNum++;
@@ -119,7 +119,7 @@ int main() {
         sub_timespec(start, finish, &delta);
         printf("master [PID: %d] process finished\n", getpid());
         fprintf(stdout, "latency : %ld.%.9ld\n", delta.tv_sec, delta.tv_nsec);
-    }
+    }*/
     
     return 0;
 }
