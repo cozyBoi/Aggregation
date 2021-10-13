@@ -6,7 +6,7 @@
 
 const int processNum = 5;
 //const int processNum = 1;
-const char* inputFile = "/Users/ppp123/Desktop/aggregation/aggregation/input.txt";
+const char* inputFile = "input.txt";
 
 
 enum { NS_PER_SECOND = 1000000000 };
@@ -43,7 +43,7 @@ int main() {
     fp = fopen(inputFile, "r+");
     int numberPerFile = numberNum / processNum, tmpNum = 0, splitNum = 0;
     int initFlag = 1;
-    /*
+    
     FILE* splitedFile;
     while (1) {
         if(initFlag){
@@ -74,8 +74,8 @@ int main() {
         }
     }
     fclose(splitedFile);
-    fclose(fp);*/
-    /*
+    fclose(fp);
+    
     for(i = 0; i < processNum; i++){
         pid = fork();
         splitNum++;
@@ -119,7 +119,7 @@ int main() {
         sub_timespec(start, finish, &delta);
         printf("master [PID: %d] process finished\n", getpid());
         fprintf(stdout, "latency : %ld.%.9ld\n", delta.tv_sec, delta.tv_nsec);
-    }*/
+    }
     
     return 0;
 }
