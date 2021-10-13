@@ -1,11 +1,32 @@
 #include <iostream>
 #include <unistd.h>
 #include <string.h>
+#include <time.h>
+#include <sys/time.h>
 using namespace std;
 
 const int processNum = 5;
 //const int processNum = 1;
 const char* inputFile = "/Users/ppp123/Desktop/aggregation/aggregation/input.txt";
+
+
+enum { NS_PER_SECOND = 1000000000 };
+
+void sub_timespec(struct timespec t1, struct timespec t2, struct timespec *td)
+{
+    td->tv_nsec = t2.tv_nsec - t1.tv_nsec;
+    td->tv_sec  = t2.tv_sec - t1.tv_sec;
+    if (td->tv_sec > 0 && td->tv_nsec < 0)
+    {
+        td->tv_nsec += NS_PER_SECOND;
+        td->tv_sec--;
+    }
+    else if (td->tv_sec < 0 && td->tv_nsec > 0)
+    {
+        td->tv_nsec -= NS_PER_SECOND;
+        td->tv_sec++;
+    }
+}
 
 //aggregation
 int main() {
@@ -70,6 +91,9 @@ int main() {
         }
     }
     else{
+        struct timespec start, finish, delta;
+        clock_gettime(CLOCK_REALTIME, &start);
+        
         //children
         splitNum -= processNum;
         
@@ -91,6 +115,11 @@ int main() {
             }
         }
         fclose(splitedFile);
+        
+        clock_gettime(CLOCK_REALTIME, &finish);
+        sub_timespec(start, finish, &delta);
+        printf("master [PID: %d] process finished\n", getpid());
+        fprintf(stdout, "latency : %ld.%.9ld\n", delta.tv_sec, delta.tv_nsec);
     }
     
     return 0;
