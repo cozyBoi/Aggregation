@@ -89,8 +89,6 @@ int main() {
         }
     }
     else{
-        struct timespec start, finish, delta;
-        clock_gettime(CLOCK_REALTIME, &start);
         
         //children
         splitNum -= processNum;
@@ -98,26 +96,58 @@ int main() {
         char fileNameBuf[60] = {0, };
         sprintf(fileNameBuf, "%s", "spilted");
         sprintf(fileNameBuf + strlen(fileNameBuf), "_%d.txt", splitNum);
-        splitedFile = fopen(fileNameBuf, "r+");
         
-        double sum = 0;
-        while(1){
-            int tmp = 0;
-            int eof = fscanf(splitedFile, "%d", &tmp);
-            
-            sum += tmp;
-            
-            if(eof == EOF){
-                printf("%lf\n", sum);
-                break;
+        char outNameBuf[60] = {0, };
+        sprintf(outNameBuf, "%s", "out");
+        sprintf(outNameBuf + strlen(outNameBuf), "_%d.txt", splitNum);
+        FILE*outFile = fopen(outNameBuf, "a");
+        
+        int testcase = 5, t = 0;
+        for(t = 0; t < testcase; t++){
+            splitedFile = fopen(fileNameBuf, "r+");
+            double sum = 0;
+            while(1){
+                int tmp = 0;
+                int eof = fscanf(splitedFile, "%d", &tmp);
+                
+                sum += tmp;
+                
+                if(eof == EOF){
+                    printf("%lf\n", sum);
+                    break;
+                }
             }
+            //한번 돌음.
+            
+            //go to start point of file
+            fseek(splitedFile, 0, SEEK_SET);
+            
+            //measure time
+            struct timespec start, finish, delta;
+            clock_gettime(CLOCK_REALTIME, &start);
+            
+            sum = 0;
+            while(1){
+                int tmp = 0;
+                int eof = fscanf(splitedFile, "%d", &tmp);
+                
+                sum += tmp;
+                
+                if(eof == EOF){
+                    printf("%lf\n", sum);
+                    break;
+                }
+            }
+            
+            clock_gettime(CLOCK_REALTIME, &finish);
+            sub_timespec(start, finish, &delta);
+            //time measure end
+            
+            fclose(splitedFile);
+            fprintf(outFile, "child [PID: %d] process finished\n", getpid());
+            fprintf(outFile, "latency : %ld.%.9ld\n", delta.tv_sec, delta.tv_nsec);
         }
-        fclose(splitedFile);
-        
-        clock_gettime(CLOCK_REALTIME, &finish);
-        sub_timespec(start, finish, &delta);
-        printf("child [PID: %d] process finished\n", getpid());
-        fprintf(stdout, "latency : %ld.%.9ld\n", delta.tv_sec, delta.tv_nsec);
+        fclose(outFile);
     }
     
     return 0;
