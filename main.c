@@ -4,7 +4,7 @@
 #include <time.h>
 #include <sys/time.h>
 
-const int processNum = 5;
+const int processNum = 16;
 //const int processNum = 1;
 const char* inputFile = "input.txt";
 
@@ -45,13 +45,19 @@ int main() {
     int initFlag = 1;
     
     FILE* splitedFile;
-    while (1) {
+    while (splitNum < processNum) {
         if(initFlag){
             char fileNameBuf[60] = {0, };
             sprintf(fileNameBuf, "%s", "spilted");
             sprintf(fileNameBuf + strlen(fileNameBuf), "_%d.txt", splitNum);
             splitedFile = fopen(fileNameBuf, "w");
             initFlag = 0;
+            if(access(fileNameBuf, F_OK)){
+                splitNum++;
+                initFlag = 1;
+                fclose(splitedFile);
+                continue;
+            }
         }
         
         int tmp = 0;
