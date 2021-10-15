@@ -33,7 +33,7 @@ int main() {
     long long int numberNum = 0;
     FILE* fp = fopen(inputFile, "r+");
     FILE* splitedFile;
-    int splitNum = 0;
+    long long int splitNum = 0;
     
     for(i = 0; i < processNum; i++){
         pid = fork();
@@ -70,9 +70,15 @@ int main() {
         int testcase = 5, t = 0;
         
         for(t = 0; t < testcase; t++){
+            printf("iter %d\n", t);
             fseek(splitedFile, 0, SEEK_SET);
             double sum = 0;
+            int cnt = 0, threshold = 100;
             while(1){
+                if(cnt > threshold){
+                    printf("hi %d\n", cnt);
+                    threshold *= 10;
+                }
                 int tmp = 0;
                 int eof = fscanf(splitedFile, "%d", &tmp);
                 
@@ -82,6 +88,7 @@ int main() {
                     printf("%lf\n", sum);
                     break;
                 }
+                cnt++;
             }
             //한번 돌음.
             
