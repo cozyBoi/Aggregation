@@ -53,9 +53,9 @@ int main() {
             sprintf(fileNameBuf + strlen(fileNameBuf), "_%lld.txt", splitNum);
             splitedFile = fopen(fileNameBuf, "w");
             printf("filename %s\n", fileNameBuf);
-            printf("ptr %p cnt %d base %p flag %d file %d charbuf %d bufsiz %d tmpfname %s\n", fp->ptr, fp->cnt, fp->base, fp->flag, fp->file, fp->charbuf, fp->bufsiz, fp->tmpfname);
+            printf("ptr %p cnt %d base %p flag %d file %d charbuf %d bufsiz %d tmpfname %s\n", fp->_ptr, fp->_cnt, fp->_base, fp->_flag, fp->_file, fp->_charbuf, fp->_bufsiz, fp->_tmpfname);
             printf("currentFile\n");
-            printf("ptr %p cnt %d base %p flag %d file %d charbuf %d bufsiz %d tmpfname %s\n", splitedFile->ptr, splitedFile->cnt, splitedFile->base, splitedFile->flag, splitedFile->file, splitedFile->charbuf, splitedFile->bufsiz, splitedFile->tmpfname);
+            printf("ptr %p cnt %d base %p flag %d file %d charbuf %d bufsiz %d tmpfname %s\n", splitedFile->_ptr, splitedFile->_cnt, splitedFile->_base, splitedFile->_flag, splitedFile->_file, splitedFile->_charbuf, splitedFile->_bufsiz, splitedFile->_tmpfname);
             initFlag = 0;
         }
         
