@@ -71,7 +71,7 @@ int main() {
             splitNum++;
             initFlag = 1;
             fclose(splitedFile);
-            fseek(splitedFile, 0, SEEK_SET); //[Debug] file operation 잘못이면 해결 될듯
+            fseek(fp, 0, SEEK_SET); //[Debug] file operation 잘못이면 해결 될듯
             //printf("\n\n");
         }
     }
