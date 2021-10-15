@@ -71,6 +71,7 @@ int main() {
             if(numberPerFile + modNumber <= tmpNum){
                 //나머지도 더해주기.
                 tmpNum = 0;
+                printf("last split %d times done\n", splitNum);
                 splitNum++;
                 initFlag = 1;
                 fclose(splitedFile);
@@ -78,6 +79,7 @@ int main() {
         }
         else if(numberPerFile <= tmpNum){
             tmpNum = 0;
+            printf("split %d times done\n", splitNum);
             splitNum++;
             initFlag = 1;
             fclose(splitedFile);
@@ -86,6 +88,7 @@ int main() {
     }
     fclose(splitedFile);
     fclose(fp);
+    
     
     for(i = 0; i < processNum; i++){
         pid = fork();
