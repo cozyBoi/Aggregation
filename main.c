@@ -29,8 +29,8 @@ void sub_timespec(struct timespec t1, struct timespec t2, struct timespec *td)
 
 //aggregation
 int main() {
-    int pid = 0,numberNum = 0, i;
-    
+    int pid = 0, i;
+    long long int numberNum = 0;
     FILE* fp = fopen(inputFile, "r+");
     while(1){
         int tmp;
@@ -41,23 +41,18 @@ int main() {
     fclose(fp);
     
     fp = fopen(inputFile, "r+");
-    int numberPerFile = numberNum / processNum, tmpNum = 0, splitNum = 0;
+    long long int numberPerFile = numberNum / processNum, tmpNum = 0, splitNum = 0;
+    long long int modNumber = numberNum % processNum;
     int initFlag = 1;
     
     FILE* splitedFile;
     while (splitNum < processNum) {
         if(initFlag){
             char fileNameBuf[60] = {0, };
-            sprintf(fileNameBuf, "%s", "spilted");
-            sprintf(fileNameBuf + strlen(fileNameBuf), "_%d.txt", splitNum);
+            sprintf(fileNameBuf, "%s", "splited");
+            sprintf(fileNameBuf + strlen(fileNameBuf), "_%lld.txt", splitNum);
             splitedFile = fopen(fileNameBuf, "w");
             initFlag = 0;
-            if(access(fileNameBuf, F_OK)){
-                splitNum++;
-                initFlag = 1;
-                fclose(splitedFile);
-                continue;
-            }
         }
         
         int tmp = 0;
@@ -71,7 +66,17 @@ int main() {
         //printf("%d\n", tmp);
         
         tmpNum++;
-        if(numberPerFile < tmpNum){
+        if(splitNum == processNum - 1){
+            //마지막 일때
+            if(numberPerFile + modNumber <= tmpNum){
+                //나머지도 더해주기.
+                tmpNum = 0;
+                splitNum++;
+                initFlag = 1;
+                fclose(splitedFile);
+            }
+        }
+        else if(numberPerFile <= tmpNum){
             tmpNum = 0;
             splitNum++;
             initFlag = 1;
@@ -100,12 +105,12 @@ int main() {
         splitNum -= processNum;
         
         char fileNameBuf[60] = {0, };
-        sprintf(fileNameBuf, "%s", "spilted");
-        sprintf(fileNameBuf + strlen(fileNameBuf), "_%d.txt", splitNum);
+        sprintf(fileNameBuf, "%s", "splited");
+        sprintf(fileNameBuf + strlen(fileNameBuf), "_%lld.txt", splitNum);
         
         char outNameBuf[60] = {0, };
         sprintf(outNameBuf, "%s", "out");
-        sprintf(outNameBuf + strlen(outNameBuf), "_%d.txt", splitNum);
+        sprintf(outNameBuf + strlen(outNameBuf), "_%lld.txt", splitNum);
         FILE*outFile = fopen(outNameBuf, "a");
         
         int testcase = 5, t = 0;
