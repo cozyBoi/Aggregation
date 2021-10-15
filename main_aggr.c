@@ -32,51 +32,8 @@ int main() {
     int pid = 0, i;
     long long int numberNum = 0;
     FILE* fp = fopen(inputFile, "r+");
-    while(1){
-        int tmp;
-        int eof = fscanf(fp, "%d", &tmp);
-        numberNum++;
-        if(eof == EOF) break;
-    }
-    fclose(fp);
-    
-    fp = fopen(inputFile, "r+");
-    long long int numberPerFile = numberNum / processNum, tmpNum = 0, splitNum = 0;
-    long long int modNumber = numberNum % processNum;
-    int initFlag = 1;
-    
     FILE* splitedFile;
-    while (splitNum < processNum) {
-        if(initFlag){
-            char fileNameBuf[60] = {0, };
-            sprintf(fileNameBuf, "%s", "splited");
-            sprintf(fileNameBuf + strlen(fileNameBuf), "_%lld.txt", splitNum);
-            splitedFile = fopen(fileNameBuf, "w");
-            initFlag = 0;
-        }
-        
-        int tmp = 0;
-        int eof = fscanf(fp, "%d", &tmp);
-        if(eof == EOF){
-            break;
-        }
-        fprintf(splitedFile, "%d\n", tmp);
-        //printf("%d\n", tmp);
-        
-        tmpNum++;
-        
-        if(numberPerFile <= tmpNum){
-            tmpNum = 0;
-            printf("split %d times done\n", splitNum);
-            splitNum++;
-            initFlag = 1;
-            fclose(splitedFile);
-            fseek(fp, 0, SEEK_SET); //[Debug] file operation 잘못이면 해결 될듯
-            //printf("\n\n");
-        }
-    }
-    fclose(fp);
-    
+    int splitNum;
     
     for(i = 0; i < processNum; i++){
         pid = fork();
@@ -91,10 +48,7 @@ int main() {
         }
     }
     else{
-        
         //children
-        splitNum -= processNum;
-        
         char fileNameBuf[60] = {0, };
         sprintf(fileNameBuf, "%s", "splited");
         sprintf(fileNameBuf + strlen(fileNameBuf), "_%lld.txt", splitNum);
@@ -121,6 +75,7 @@ int main() {
             }
             //한번 돌음.
             
+            printf("one iter done\n");
             //go to start point of file
             fseek(splitedFile, 0, SEEK_SET);
             
