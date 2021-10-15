@@ -52,10 +52,6 @@ int main() {
             sprintf(fileNameBuf, "%s", "splited");
             sprintf(fileNameBuf + strlen(fileNameBuf), "_%lld.txt", splitNum);
             splitedFile = fopen(fileNameBuf, "w");
-            printf("filename %s\n", fileNameBuf);
-            printf("ptr %p cnt %d base %p flag %d file %d charbuf %d bufsiz %d tmpfname %s\n", fp->_ptr, fp->_cnt, fp->_base, fp->_flag, fp->_file, fp->_charbuf, fp->_bufsiz, fp->_tmpfname);
-            printf("currentFile\n");
-            printf("ptr %p cnt %d base %p flag %d file %d charbuf %d bufsiz %d tmpfname %s\n", splitedFile->_ptr, splitedFile->_cnt, splitedFile->_base, splitedFile->_flag, splitedFile->_file, splitedFile->_charbuf, splitedFile->_bufsiz, splitedFile->_tmpfname);
             initFlag = 0;
         }
         
@@ -86,6 +82,7 @@ int main() {
             splitNum++;
             initFlag = 1;
             fclose(splitedFile);
+            fseek(splitedFile, 0, SEEK_SET); //[Debug] file operation 잘못이면 해결 될듯
             //printf("\n\n");
         }
     }
