@@ -65,18 +65,7 @@ int main() {
         
         tmpNum++;
         
-        if(splitNum == processNum - 1){
-            //마지막 일때
-            if(numberPerFile + modNumber <= tmpNum){
-                //나머지도 더해주기.
-                tmpNum = 0;
-                printf("last split %d times done\n", splitNum);
-                splitNum++;
-                initFlag = 1;
-                fclose(splitedFile);
-            }
-        }
-        else if(numberPerFile <= tmpNum){
+        if(numberPerFile <= tmpNum){
             tmpNum = 0;
             printf("split %d times done\n", splitNum);
             splitNum++;
