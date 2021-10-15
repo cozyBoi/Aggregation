@@ -4,7 +4,7 @@
 #include <time.h>
 #include <sys/time.h>
 
-const int processNum = 16;
+const int processNum = 10;
 //const int processNum = 1;
 const char* inputFile = "input.txt";
 
@@ -81,13 +81,14 @@ int main() {
                 }
                 int tmp = 0;
                 int eof = fscanf(splitedFile, "%d", &tmp);
-                
-                sum += tmp;
-                
                 if(eof == EOF){
                     printf("%lf\n", sum);
                     break;
                 }
+                
+                sum += tmp;
+                
+                
                 cnt++;
             }
             //한번 돌음.
@@ -104,13 +105,14 @@ int main() {
             while(1){
                 int tmp = 0;
                 int eof = fscanf(splitedFile, "%d", &tmp);
-                
-                sum += tmp;
-                
                 if(eof == EOF){
                     printf("%lf\n", sum);
                     break;
                 }
+                
+                sum += tmp;
+                
+                
             }
             
             clock_gettime(CLOCK_REALTIME, &finish);

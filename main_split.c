@@ -4,7 +4,7 @@
 #include <time.h>
 #include <sys/time.h>
 
-const int processNum = 16;
+const int processNum = 10;
 //const int processNum = 1;
 const char* inputFile = "input.txt";
 
