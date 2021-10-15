@@ -33,7 +33,7 @@ int main() {
     long long int numberNum = 0;
     FILE* fp = fopen(inputFile, "r+");
     FILE* splitedFile;
-    int splitNum;
+    int splitNum = 0;
     
     for(i = 0; i < processNum; i++){
         pid = fork();
@@ -53,10 +53,14 @@ int main() {
         sprintf(fileNameBuf, "%s", "splited");
         sprintf(fileNameBuf + strlen(fileNameBuf), "_%lld.txt", splitNum);
         
+        printf("file name : %s\n", fileNameBuf);
+        
         char outNameBuf[60] = {0, };
         sprintf(outNameBuf, "%s", "out");
         sprintf(outNameBuf + strlen(outNameBuf), "_%lld.txt", splitNum);
         FILE*outFile = fopen(outNameBuf, "a");
+        
+        printf("out name : %s\n", outNameBuf);
         
         int testcase = 5, t = 0;
         for(t = 0; t < testcase; t++){
