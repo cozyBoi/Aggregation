@@ -52,20 +52,23 @@ int main() {
             sprintf(fileNameBuf, "%s", "splited");
             sprintf(fileNameBuf + strlen(fileNameBuf), "_%lld.txt", splitNum);
             splitedFile = fopen(fileNameBuf, "w");
+            printf("filename %s\n", fileNameBuf);
+            printf("ptr %p cnt %d base %p flag %d file %d charbuf %d bufsiz %d tmpfname %s\n", fp->ptr, fp->cnt, fp->base, fp->flag, fp->file, fp->charbuf, fp->bufsiz, fp->tmpfname);
+            printf("currentFile\n");
+            printf("ptr %p cnt %d base %p flag %d file %d charbuf %d bufsiz %d tmpfname %s\n", splitedFile->ptr, splitedFile->cnt, splitedFile->base, splitedFile->flag, splitedFile->file, splitedFile->charbuf, splitedFile->bufsiz, splitedFile->tmpfname);
             initFlag = 0;
         }
         
         int tmp = 0;
         int eof = fscanf(fp, "%d", &tmp);
         if(eof == EOF){
-            //fprintf(splitedFile, "end\n");
-            //printf("end\n");
             break;
         }
         fprintf(splitedFile, "%d\n", tmp);
         //printf("%d\n", tmp);
         
         tmpNum++;
+        
         if(splitNum == processNum - 1){
             //마지막 일때
             if(numberPerFile + modNumber <= tmpNum){
