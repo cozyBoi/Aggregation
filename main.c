@@ -75,7 +75,6 @@ int main() {
             //printf("\n\n");
         }
     }
-    fclose(splitedFile);
     fclose(fp);
     
     
