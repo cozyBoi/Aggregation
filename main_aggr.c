@@ -52,6 +52,7 @@ int main() {
         char fileNameBuf[60] = {0, };
         sprintf(fileNameBuf, "%s", "splited");
         sprintf(fileNameBuf + strlen(fileNameBuf), "_%lld.txt", splitNum);
+        splitedFile = fopen(fileNameBuf, "r");
         
         printf("file name : %s\n", fileNameBuf);
         
@@ -63,8 +64,9 @@ int main() {
         printf("out name : %s\n", outNameBuf);
         
         int testcase = 5, t = 0;
+        
         for(t = 0; t < testcase; t++){
-            splitedFile = fopen(fileNameBuf, "r+");
+            fseek(splitedFile, 0, SEEK_SET);
             double sum = 0;
             while(1){
                 int tmp = 0;
@@ -104,10 +106,11 @@ int main() {
             sub_timespec(start, finish, &delta);
             //time measure end
             
-            fclose(splitedFile);
+            
             fprintf(outFile, "child [PID: %d] process finished\n", getpid());
             fprintf(outFile, "latency : %ld.%.9ld\n", delta.tv_sec, delta.tv_nsec);
         }
+        fclose(splitedFile);
         fclose(outFile);
     }
     
