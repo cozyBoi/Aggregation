@@ -53,6 +53,10 @@ int main() {
         sprintf(fileNameBuf, "%s", "splited");
         sprintf(fileNameBuf + strlen(fileNameBuf), "_%lld.txt", splitNum);
         splitedFile = fopen(fileNameBuf, "r");
+        if(splitedFile == NULL){
+            printf("file open error\n");
+            return 0;
+        }
         
         printf("file name : %s\n", fileNameBuf);
         
