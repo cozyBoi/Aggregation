@@ -112,13 +112,13 @@ int main() {
             for(j = 0; j < numberPerFile - 100; j++){
                 int tmp = 0;
                 int eof = fscanf(splitedFile, "%d", &tmp);
-                
-                sum += tmp;
-                
                 if(eof == EOF){
                     printf("%lf\n", sum);
                     break;
                 }
+                sum += tmp;
+                
+                
             }
             //한번 돌음.
             
@@ -133,13 +133,14 @@ int main() {
             for(j = 0; j < numberPerFile - 100; j++){
                 int tmp = 0;
                 int eof = fscanf(splitedFile, "%d", &tmp);
-                
-                sum += tmp;
-                
                 if(eof == EOF){
                     printf("%lf\n", sum);
                     break;
                 }
+                
+                sum += tmp;
+                
+                
             }
             
             clock_gettime(CLOCK_REALTIME, &finish);
