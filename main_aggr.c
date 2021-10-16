@@ -33,7 +33,6 @@ int main() {
     long long int numberNum = 0;
     FILE* fp = fopen(inputFile, "r+");
     FILE* splitedFile;
-    long long int splitNum = 0;
     
     while(1){
         int tmp;
