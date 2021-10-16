@@ -109,7 +109,8 @@ int main() {
             splitedFile = fopen(fileNameBuf, "r+");
             double sum = 0;
             long long int j = 0;
-            for(j = 0; j < numberPerFile - 100; j++){
+            for(j = 0; j < numberPerFile; j++){
+                fseek(splitedFile, 0, SEEK_SET);
                 int tmp = 0;
                 int eof = fscanf(splitedFile, "%d", &tmp);
                 if(eof == EOF){
@@ -130,7 +131,8 @@ int main() {
             clock_gettime(CLOCK_REALTIME, &start);
             
             sum = 0;
-            for(j = 0; j < numberPerFile - 100; j++){
+            for(j = 0; j < numberPerFile; j++){
+                fseek(splitedFile, 0, SEEK_SET);
                 int tmp = 0;
                 int eof = fscanf(splitedFile, "%d", &tmp);
                 if(eof == EOF){
