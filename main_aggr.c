@@ -45,7 +45,7 @@ int main() {
     fp = fopen(inputFile, "r+");
     long long int numberPerFile = numberNum / processNum, tmpNum = 0, splitNum = 0;
     long long int modNumber = numberNum % processNum;
-    
+    splitNum--;
     for(i = 0; i < processNum; i++){
         pid = fork();
         splitNum++;
