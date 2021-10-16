@@ -85,9 +85,8 @@ int main() {
                     printf("%lf\n", sum);
                     break;
                 }
-                
+                printf("%lf %d\n", sum, tmp);
                 sum += tmp;
-                
                 
                 cnt++;
             }
