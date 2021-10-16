@@ -32,8 +32,51 @@ int main() {
     int pid = 0, i;
     long long int numberNum = 0;
     FILE* fp = fopen(inputFile, "r+");
+    while(1){
+        int tmp;
+        int eof = fscanf(fp, "%d", &tmp);
+        numberNum++;
+        if(eof == EOF) break;
+    }
+    fclose(fp);
+    
+    fp = fopen(inputFile, "r+");
+    long long int numberPerFile = numberNum / processNum, tmpNum = 0, splitNum = 0;
+    long long int modNumber = numberNum % processNum;
+    int initFlag = 1;
+    
     FILE* splitedFile;
-    long long int splitNum = 0;
+    while (splitNum < processNum) {
+        if(initFlag){
+            char fileNameBuf[60] = {0, };
+            sprintf(fileNameBuf, "%s", "splited");
+            sprintf(fileNameBuf + strlen(fileNameBuf), "_%lld.txt", splitNum);
+            splitedFile = fopen(fileNameBuf, "w");
+            initFlag = 0;
+        }
+        
+        int tmp = 0;
+        int eof = fscanf(fp, "%d", &tmp);
+        if(eof == EOF){
+            break;
+        }
+        fprintf(splitedFile, "%d\n", tmp);
+        //printf("%d\n", tmp);
+        
+        tmpNum++;
+        
+        if(numberPerFile <= tmpNum){
+            tmpNum = 0;
+            printf("split %d times done\n", splitNum);
+            splitNum++;
+            initFlag = 1;
+            fclose(splitedFile);
+            fseek(fp, 0, SEEK_SET); //[Debug] file operation 잘못이면 해결 될듯
+            //printf("\n\n");
+        }
+    }
+    fclose(fp);
+    
     
     for(i = 0; i < processNum; i++){
         pid = fork();
@@ -48,51 +91,37 @@ int main() {
         }
     }
     else{
+        
         //children
+        splitNum -= processNum;
+        
         char fileNameBuf[60] = {0, };
         sprintf(fileNameBuf, "%s", "splited");
         sprintf(fileNameBuf + strlen(fileNameBuf), "_%lld.txt", splitNum);
-        splitedFile = fopen(fileNameBuf, "r");
-        if(splitedFile == NULL){
-            printf("file open error\n");
-            return 0;
-        }
-        
-        printf("file name : %s\n", fileNameBuf);
         
         char outNameBuf[60] = {0, };
         sprintf(outNameBuf, "%s", "out");
         sprintf(outNameBuf + strlen(outNameBuf), "_%lld.txt", splitNum);
         FILE*outFile = fopen(outNameBuf, "a");
         
-        printf("out name : %s\n", outNameBuf);
-        
         int testcase = 5, t = 0;
-        
         for(t = 0; t < testcase; t++){
-            printf("iter %d\n", t);
-            fseek(splitedFile, 0, SEEK_SET);
+            splitedFile = fopen(fileNameBuf, "r+");
             double sum = 0;
-            int cnt = 0, threshold = 100;
-            while(1){
-                if(cnt > threshold){
-                    printf("hi %d\n", cnt);
-                    threshold *= 10;
-                }
+            long long int j = 0;
+            for(j = 0; j < numberPerFile - 100; j++){
                 int tmp = 0;
                 int eof = fscanf(splitedFile, "%d", &tmp);
+                
+                sum += tmp;
+                
                 if(eof == EOF){
                     printf("%lf\n", sum);
                     break;
                 }
-                printf("%lf %d\n", sum, tmp);
-                sum += tmp;
-                
-                cnt++;
             }
             //한번 돌음.
             
-            printf("one iter done\n");
             //go to start point of file
             fseek(splitedFile, 0, SEEK_SET);
             
@@ -101,28 +130,26 @@ int main() {
             clock_gettime(CLOCK_REALTIME, &start);
             
             sum = 0;
-            while(1){
+            for(j = 0; j < numberPerFile - 100; j++){
                 int tmp = 0;
                 int eof = fscanf(splitedFile, "%d", &tmp);
+                
+                sum += tmp;
+                
                 if(eof == EOF){
                     printf("%lf\n", sum);
                     break;
                 }
-                
-                sum += tmp;
-                
-                
             }
             
             clock_gettime(CLOCK_REALTIME, &finish);
             sub_timespec(start, finish, &delta);
             //time measure end
             
-            
+            fclose(splitedFile);
             fprintf(outFile, "child [PID: %d] process finished\n", getpid());
             fprintf(outFile, "latency : %ld.%.9ld\n", delta.tv_sec, delta.tv_nsec);
         }
-        fclose(splitedFile);
         fclose(outFile);
     }
     
